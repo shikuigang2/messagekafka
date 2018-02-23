@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztth.user.mapper.AdminUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ztth.user.entity.AdminUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="msgkey" property="msgkey" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <select id="getUserByMobile" resultType="java.util.Map"  resultMap="BaseResultMap">
+    SELECT  *  FROM  t_adminuser  WHERE  mobile = #{mobile}
+  </select>
+
+
+  <update id="updateUserByMobile" parameterType="com.ztth.user.entity.AdminUser" >
+    update t_adminuser
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="msgkey != null" >
+        msgkey = #{msgkey,jdbcType=VARCHAR},
+      </if>
+
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </update>
+
+
+</mapper>
