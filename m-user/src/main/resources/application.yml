@@ -36,6 +36,7 @@ mybatis:
 
 server:
     port: 8766
+    key: ztthmsgkey2018
 
 redis:
     database: 1

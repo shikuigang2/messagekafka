@@ -2,21 +2,18 @@ package com.ztth.message.gate.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.ztth.core.exception.BaseException;
-import com.ztth.message.gate.biz.RedisQueueBiz;
+import com.ztth.message.gate.biz.RedisBiz;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Component
 public class SessionAccessFilter extends ZuulFilter {
 
     @Autowired
-    private RedisQueueBiz redisQueueBiz;
+    private RedisBiz redisBiz;
 
     @Override
     public String filterType() {
@@ -52,9 +49,8 @@ public class SessionAccessFilter extends ZuulFilter {
         if(requestUri.indexOf("/user/getToken")==-1){
             //判断token 是否过期
             String token  =  request.getParameter("token");
-            System.out.println(token);
-            if(redisQueueBiz.get(token)== null || redisQueueBiz.get(token) == ""){
-                setFailedRequest("403 Forbidden!", 403);
+            if(redisBiz.get(token)== null || redisBiz.get(token) == ""){
+                setFailedRequest("403 Forbidden,invalid token!", 403);
             }
         }
         return null;

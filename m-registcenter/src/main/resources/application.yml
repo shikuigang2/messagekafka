@@ -13,6 +13,7 @@ security:
 eureka:
   enviroment: product
   instance:
+    instance-id: localhost:${server.port}
     prefer-ip-address: true
     hostname: 30.106.154.236
   server:

@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class RedisQueueBiz {
+public class RedisBiz {
 
-        private static final Logger logger = LoggerFactory.getLogger(RedisQueueBiz.class);
+        private static final Logger logger = LoggerFactory.getLogger(RedisBiz.class);
 
         @Autowired
         private JedisPool jedisPool;
@@ -163,7 +163,6 @@ public class RedisQueueBiz {
                         for (String str : keyset) {
                                 len +=jedis.llen(str);
                         }
-
                         return len;
                 }catch (Exception e){
                         logger.error("Jedis get 异常" + e.getMessage());
@@ -174,5 +173,23 @@ public class RedisQueueBiz {
                         }
                 }
         }
+        /**
+         * 获取key 的过期时间
+         */
+        public long ttl(String key){
+                Jedis jedis = null;
+                try {
+                        jedis = jedisPool.getResource();
+                        return jedis.ttl(key);
+                }catch (Exception e){
+                        logger.error("Jedis get 异常" + e.getMessage());
+                        return 0L;
+                }finally {
+                        if(jedis != null){
+                                jedis.close();
+                        }
+                }
+        }
+
 
 }

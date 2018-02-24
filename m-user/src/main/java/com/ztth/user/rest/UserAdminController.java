@@ -6,6 +6,7 @@ import com.ztth.core.msg.BaseResponse;
 import com.ztth.core.msg.ObjectRestResponse;
 import com.ztth.core.util.Blowfish;
 import com.ztth.core.util.PhoneFormatCheckUtils;
+import com.ztth.user.config.ServerConfig;
 import com.ztth.user.constant.UserConstant;
 import com.ztth.user.biz.RedisUserBiz;
 import com.ztth.user.biz.UserAdminBiz;
@@ -28,6 +29,9 @@ public class UserAdminController {
     @Autowired
     private RedisUserBiz redisUserBiz;
 
+    @Autowired
+    private ServerConfig serverConfig;
+
     @RequestMapping(value = "/getToken")
     @ResponseBody
     public ResponseEntity<?> sendPost(String mobile,String msgkey) throws Exception {
@@ -45,7 +49,8 @@ public class UserAdminController {
         }else{
             if(user.getMsgkey().equals(msgkey)){
                 Map<String,String> map = new HashMap<String,String>();
-                String token = new Blowfish(msgkey).encryptString(mobile);
+                //String token = new Blowfish(msgkey).encryptString(mobile);//每个用户私有key
+                String token = new Blowfish(serverConfig.getKey()).encryptString(mobile); //服务器统一key
                 redisUserBiz.set(token,JSON.toJSONString(user), UserConstant.EXPIRT_USER);
                 resMap.put("status",200);
                 resMap.put("token",token);

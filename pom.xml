@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ztth.message</groupId>
-    <artifactId>messageservice</artifactId>
+    <artifactId>msgkafa</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
